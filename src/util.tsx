@@ -1,4 +1,4 @@
-import { Ref, RefObject, useEffect } from "react";
+import { useEffect } from "react";
 import { CurrentWeatherModel } from "./app/model/CurrentWeatherModel";
 import { ForecastWeatherModel } from "./app/model/ForecastWeatherModel";
 import { DateTime } from "luxon";

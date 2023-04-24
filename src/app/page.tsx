@@ -12,6 +12,7 @@ import { CurrentWeatherModel } from "./model/CurrentWeatherModel";
 import { ForecastWeatherModel } from "./model/ForecastWeatherModel";
 import { useState } from "react";
 import SearchInput from "./components/SearchInput";
+import SunMoon from "./components/SunMoon";
 
 const fetcher = async (params: any) => {
   const [url, { lat, lon }] = params;
@@ -33,12 +34,17 @@ const fetcher = async (params: any) => {
 };
 
 export default function Home() {
-  const [location, setLocation] = useState({ lat: 11.5564, lon: 104.9282 });
+  const [location, setLocation] = useState({ lat: 35.6762, lon: 139.6503 });
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const { data, error } = useSWR(["weather", location], fetcher);
   if (error) return "An error has occured";
-  if (!data) return "Loading";
+  if (!data)
+    return (
+      <div className="w-screen h-screen text-white p-6 bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col">
+        Loading
+      </div>
+    );
   const { formatCurrentData, formatForecastData, uvIndex } = data;
 
   console.log(formatCurrentData);
@@ -111,13 +117,19 @@ export default function Home() {
           ))}
         </div>
 
-        <div className="mt-12 py-3 px-4 rounded-lg bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg w-full">
-          <div className="flex ">
+        <div className="mt-12 py-4 px-6 rounded-lg bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg w-full">
+          <SunMoon
+            sunrise={formatCurrentData.sunrise}
+            sunset={formatCurrentData.sunset}
+            timezone={formatForecastData.timezone}
+            current={formatCurrentData.dt}
+          />
+          <div className="mt-5 flex">
             <div className="w-1/2">
               <p className="text-[12px]">Feel like</p>
               <p>{Math.round(formatCurrentData.feels_like)}°C</p>
             </div>
-            <div className="">
+            <div className="w-1/2">
               <p className="text-[12px]">Humidity</p>
               <p>{formatCurrentData.humidity}%</p>
             </div>
@@ -127,7 +139,7 @@ export default function Home() {
               <p className="text-[12px]">Chance of rain</p>
               <p>31%</p>
             </div>
-            <div>
+            <div className="w-1/2">
               <p className="text-[12px]">Pressure</p>
               <p>{formatCurrentData.pressure}mbar</p>
             </div>
@@ -137,7 +149,7 @@ export default function Home() {
               <p className="text-[12px]">Wind speed</p>
               <p>{formatCurrentData.speed}km/h</p>
             </div>
-            <div>
+            <div className="w-1/2">
               <p className="text-[12px]">UV Index</p>
               <p>{uvIndex}</p>
             </div>
