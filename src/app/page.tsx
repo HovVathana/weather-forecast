@@ -47,11 +47,8 @@ export default function Home() {
     );
   const { formatCurrentData, formatForecastData, uvIndex } = data;
 
-  console.log(formatCurrentData);
-  console.log(formatForecastData);
-
   return (
-    <div className="w-full h-full text-white p-6 bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col">
+    <div className="w-full h-full text-white p-6 md:px-[150px] lg:px-[200px] bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col">
       <div className="flex justify-between items-center">
         <h1 className={`font-semibold text-lg ${isSearchOpen && "hidden"}`}>
           {formatCurrentData.name}
@@ -70,11 +67,11 @@ export default function Home() {
       <div className="flex flex-col items-center mt-[100px]">
         <h1 className="text-[150px] relative">
           {Math.round(formatCurrentData.temp)}
-          <span className="text-[20px] absolute top-[60px]">°C</span>
+          <span className="text-[20px] absolute top-[45px]">°C</span>
         </h1>
         <p className="text-lg">{formatCurrentData.details}</p>
       </div>
-      <div className="flex flex-col mt-12">
+      <div className="flex flex-col mt-[150px]">
         {formatForecastData.daily.map((daily, i) => (
           <div className="flex justify-between items-center" key={i}>
             <div className="flex items-center gap-2">
@@ -118,12 +115,15 @@ export default function Home() {
         </div>
 
         <div className="mt-12 py-4 px-6 rounded-lg bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg w-full">
-          <SunMoon
-            sunrise={formatCurrentData.sunrise}
-            sunset={formatCurrentData.sunset}
-            timezone={formatForecastData.timezone}
-            current={formatCurrentData.dt}
-          />
+          <div className="flex items-center justify-center">
+            <SunMoon
+              sunrise={formatCurrentData.sunrise}
+              sunset={formatCurrentData.sunset}
+              timezone={formatForecastData.timezone}
+              current={formatCurrentData.dt}
+            />
+          </div>
+
           <div className="mt-5 flex">
             <div className="w-1/2">
               <p className="text-[12px]">Feel like</p>

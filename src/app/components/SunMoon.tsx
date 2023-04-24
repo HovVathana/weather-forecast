@@ -23,10 +23,6 @@ function SunMoon({ sunrise, sunset, timezone, current }: Props) {
     var sunset_time = formatToLocalTime(sunset, timezone, "TT");
     var current_time = formatToLocalTime(current, timezone, "TT");
 
-    console.log(current_time);
-    console.log(sunset_time);
-    console.log(sunrise_time);
-
     var difference_sunset =
       totalSeconds(sunset_time) - totalSeconds(sunrise_time);
     var difference_sunset_time = formatToLocalTime(
@@ -34,7 +30,6 @@ function SunMoon({ sunrise, sunset, timezone, current }: Props) {
       timezone,
       "TT"
     );
-    console.log(difference_sunset_time);
 
     var difference_current =
       totalSeconds(current_time) - totalSeconds(sunrise_time);
@@ -44,14 +39,10 @@ function SunMoon({ sunrise, sunset, timezone, current }: Props) {
       "TT"
     );
 
-    console.log(difference_current_time);
-
     var pct = ((100 * difference_current) / difference_sunset).toFixed(2);
 
     setPercentage(pct);
   }, [sunrise, sunset, current, timezone]);
-
-  console.log(percentage);
 
   return (
     <>
@@ -63,19 +54,17 @@ function SunMoon({ sunrise, sunset, timezone, current }: Props) {
               style={{ width: `${percentage}%` }}
             ></div>
           </div>
-          <div
+          {/* <div
             className="sun-symbol-path"
             style={
               {
-                //   WebkitTransform: `rotateZ(${
-                //     (parseFloat(percentage) / 100) * 38
-                //   }deg)`,
-                //   WebkitTransform: "rotateZ(10deg)",
+                //   WebkitTransform: `rotateZ(${parseInt(percentage) * 75}deg)`,
+                //   WebkitTransform: "rotateZ(180deg)",
               }
             }
           >
             <span className="symbol">☀</span>
-          </div>
+          </div> */}
         </div>
         <div className="legend">
           <div className="sunrise">
