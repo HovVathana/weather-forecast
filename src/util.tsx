@@ -12,7 +12,7 @@ export const formatToLocalTime = (
 export const formatCurrentWeather = (data: CurrentWeatherModel) => {
   const {
     coord: { lat, lon },
-    main: { temp, feels_like, temp_min, temp_max, humidity },
+    main: { temp, feels_like, temp_min, temp_max, humidity, pressure },
     name,
     dt,
     sys: { country, sunrise, sunset },
@@ -38,6 +38,7 @@ export const formatCurrentWeather = (data: CurrentWeatherModel) => {
     details,
     icon,
     speed,
+    pressure,
   };
 };
 
@@ -54,12 +55,13 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
     };
   });
 
-  let hourly = hourlyData.slice(1, 6).map((d: any) => {
+  let hourly = hourlyData.slice(1, 5).map((d: any) => {
     return {
       title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
       temp: d.temp,
       icon: d.weather[0].icon,
       wind_speed: d.wind_speed,
+      wind_deg: d.wind_deg,
     };
   });
 

@@ -14,4 +14,5 @@ export interface FormatCurrentWeatherModel {
   details: string;
   icon: string;
   speed: number;
+  pressure: number;
 }

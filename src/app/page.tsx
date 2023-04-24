@@ -5,7 +5,7 @@ import {
   formatForecastWeather,
   getImgUrlFromCode,
 } from "@/util";
-import { UilSearch } from "@iconscout/react-unicons";
+import { UilSearch, UilArrowUp } from "@iconscout/react-unicons";
 import axios from "axios";
 import useSWR from "swr";
 import { CurrentWeatherModel } from "./model/CurrentWeatherModel";
@@ -27,7 +27,9 @@ const fetcher = async (params: any) => {
   let formatCurrentData = formatCurrentWeather(currentData);
   let formatForecastData = formatForecastWeather(forecastData);
 
-  return { formatCurrentData, formatForecastData };
+  let uvIndex = forecastData.current.uvi;
+
+  return { formatCurrentData, formatForecastData, uvIndex };
 };
 
 export default function Home() {
@@ -37,7 +39,7 @@ export default function Home() {
   const { data, error } = useSWR(["weather", location], fetcher);
   if (error) return "An error has occured";
   if (!data) return "Loading";
-  const { formatCurrentData, formatForecastData } = data;
+  const { formatCurrentData, formatForecastData, uvIndex } = data;
 
   console.log(formatCurrentData);
   console.log(formatForecastData);
@@ -97,11 +99,49 @@ export default function Home() {
                 className="w-[40px]"
                 alt="weather-icon"
               />
-              <p className="text-[12px] text-gray-300">
-                {hourly.wind_speed}km/h
-              </p>
+              <div className="flex items-center">
+                <div style={{ transform: `rotate(${hourly.wind_deg}deg)` }}>
+                  <UilArrowUp size="15" color="#fff" />
+                </div>
+                <p className="text-[12px] text-gray-300">
+                  {hourly.wind_speed}km/h
+                </p>
+              </div>
             </div>
           ))}
+        </div>
+
+        <div className="mt-12 py-3 px-4 rounded-lg bg-white bg-opacity-40 backdrop-filter backdrop-blur-lg w-full">
+          <div className="flex ">
+            <div className="w-1/2">
+              <p className="text-[12px]">Feel like</p>
+              <p>{Math.round(formatCurrentData.feels_like)}°C</p>
+            </div>
+            <div className="">
+              <p className="text-[12px]">Humidity</p>
+              <p>{formatCurrentData.humidity}%</p>
+            </div>
+          </div>
+          <div className="mt-5 flex">
+            <div className="w-1/2">
+              <p className="text-[12px]">Chance of rain</p>
+              <p>31%</p>
+            </div>
+            <div>
+              <p className="text-[12px]">Pressure</p>
+              <p>{formatCurrentData.pressure}mbar</p>
+            </div>
+          </div>
+          <div className="mt-5 flex">
+            <div className="w-1/2">
+              <p className="text-[12px]">Wind speed</p>
+              <p>{formatCurrentData.speed}km/h</p>
+            </div>
+            <div>
+              <p className="text-[12px]">UV Index</p>
+              <p>{uvIndex}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
