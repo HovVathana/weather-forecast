@@ -50,6 +50,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
       min: d.temp.min,
       max: d.temp.max,
       icon: d.weather[0].icon,
+      detail: d.weather[0].main,
     };
   });
 
@@ -58,6 +59,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
       title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
       temp: d.temp,
       icon: d.weather[0].icon,
+      wind_speed: d.wind_speed,
     };
   });
 

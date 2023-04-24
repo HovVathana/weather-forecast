@@ -10,10 +10,12 @@ export interface Daily {
   min: number;
   max: number;
   icon: string;
+  detail: string;
 }
 
 export interface Hourly {
   title: string;
   temp: number;
   icon: string;
+  wind_speed: number;
 }
