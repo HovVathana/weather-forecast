@@ -1,7 +1,11 @@
 "use client";
 
 import { formatForecastWeather, getImgUrlFromCode } from "@/util";
-import { UilSearch, UilArrowUp } from "@iconscout/react-unicons";
+import {
+  UilSearch,
+  UilLocationPoint,
+  UilArrowUp,
+} from "@iconscout/react-unicons";
 import axios from "axios";
 import useSWR from "swr";
 import { ForecastWeatherModel } from "./model/ForecastWeatherModel";
@@ -91,8 +95,9 @@ export default function Home() {
           )}
         </div>
         {!name ? (
-          <div className="h-screen flex justify-center mt-[150px]">
-            <h1 className="text-3xl">Search for location</h1>
+          <div className="h-screen flex flex-col items-center mt-[150px]">
+            <h1 className="text-3xl mb-4">Search for location</h1>
+            <UilLocationPoint size="90" color="#fff" />
           </div>
         ) : (
           <>
