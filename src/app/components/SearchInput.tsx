@@ -3,14 +3,15 @@
 import { useClickOutside } from "@/util";
 import { UilLocationPoint, UilSearch } from "@iconscout/react-unicons";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { SearchResultModel } from "../model/SearchResultModel";
 
 type SearchInputProps = {
-  setIsSearchOpen: () => void;
+  setIsSearchOpen: Dispatch<SetStateAction<boolean>>;
+  setLocation: Dispatch<SetStateAction<{ lat: number; lon: number }>>;
 };
 
-function SearchInput({ setIsSearchOpen }: SearchInputProps) {
+function SearchInput({ setIsSearchOpen, setLocation }: SearchInputProps) {
   const inputRef = useRef(null);
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState<SearchResultModel[]>([]);
@@ -50,7 +51,13 @@ function SearchInput({ setIsSearchOpen }: SearchInputProps) {
               <div
                 key={search?.id}
                 className="flex w-[100%] items-center gap-2 p-3 border-b last:border-none  border-gray-400 cursor-pointer hover:bg-blue-100 hover:rounded-lg hover:border-blue-100 "
-                onClick={() => {}}
+                onClick={() => {
+                  setLocation({
+                    lat: search?.latitude || 13,
+                    lon: search?.longitude || 104,
+                  });
+                  setIsSearchOpen(false);
+                }}
               >
                 <UilLocationPoint size="30" color="#000" />
 

@@ -45,7 +45,10 @@ export default function Home() {
           {formatCurrentData.name}
         </h1>
         {isSearchOpen ? (
-          <SearchInput setIsSearchOpen={setIsSearchOpen} />
+          <SearchInput
+            setIsSearchOpen={setIsSearchOpen}
+            setLocation={setLocation}
+          />
         ) : (
           <div onClick={() => setIsSearchOpen(true)}>
             <UilSearch size="30" color="#fff" />
