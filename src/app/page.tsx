@@ -13,6 +13,7 @@ import { ForecastWeatherModel } from "./model/ForecastWeatherModel";
 import { useState } from "react";
 import SearchInput from "./components/SearchInput";
 import SunMoon from "./components/SunMoon";
+import ClockLoader from "react-spinners/ClockLoader";
 
 const fetcher = async (params: any) => {
   const [url, { lat, lon }] = params;
@@ -41,8 +42,14 @@ export default function Home() {
   if (error) return "An error has occured";
   if (!data)
     return (
-      <div className="w-screen h-screen text-white p-6 bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col">
-        Loading
+      <div className="w-screen h-screen items-center justify-center text-white p-6 bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col">
+        <ClockLoader
+          color="#fff"
+          loading={true}
+          size={30}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        />
       </div>
     );
   const { formatCurrentData, formatForecastData, uvIndex } = data;
