@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { CurrentWeatherModel } from "./app/model/CurrentWeatherModel";
 import { ForecastWeatherModel } from "./app/model/ForecastWeatherModel";
 import { DateTime } from "luxon";
 
@@ -9,41 +8,32 @@ export const formatToLocalTime = (
   format = "cccc, dd LLL yyyy' | Local time: 'hh:mm a"
 ) => DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
 
-export const formatCurrentWeather = (data: CurrentWeatherModel) => {
-  const {
-    coord: { lat, lon },
-    main: { temp, feels_like, temp_min, temp_max, humidity, pressure },
-    name,
-    dt,
-    sys: { country, sunrise, sunset },
-    weather,
-    wind: { speed },
+export const formatForecastWeather = (data: ForecastWeatherModel) => {
+  let {
+    timezone,
+    daily: dailyData,
+    hourly: hourlyData,
+    current: currentData,
   } = data;
 
-  const { main: details, icon } = weather[0];
-
-  return {
-    lat,
-    lon,
-    temp,
-    feels_like,
-    temp_min,
-    temp_max,
-    humidity,
-    name,
-    dt,
-    country,
-    sunrise,
-    sunset,
-    details,
-    icon,
-    speed,
-    pressure,
+  let current = {
+    clouds: currentData.clouds,
+    dew_point: currentData.dew_point,
+    dt: currentData.dt,
+    feels_like: currentData.feels_like,
+    humidity: currentData.humidity,
+    pressure: currentData.pressure,
+    sunrise: currentData.sunrise,
+    sunset: currentData.sunset,
+    temp: currentData.temp,
+    uvi: currentData.uvi,
+    visibility: currentData.visibility,
+    weather: currentData.weather,
+    wind_deg: currentData.wind_deg,
+    wind_gust: currentData.wind_gust,
+    wind_speed: currentData.wind_speed,
   };
-};
 
-export const formatForecastWeather = (data: ForecastWeatherModel) => {
-  let { timezone, daily: dailyData, hourly: hourlyData } = data;
   let daily = dailyData.slice(1, 6).map((d: any) => {
     return {
       title: formatToLocalTime(d.dt, timezone, "ccc"),
@@ -55,7 +45,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
     };
   });
 
-  let hourly = hourlyData.slice(1, 5).map((d: any) => {
+  let hourly = hourlyData.map((d: any) => {
     return {
       title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
       temp: d.temp,
@@ -65,7 +55,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
     };
   });
 
-  return { timezone, daily, hourly };
+  return { timezone, current, daily, hourly };
 };
 
 export const getImgUrlFromCode = (code: string) =>

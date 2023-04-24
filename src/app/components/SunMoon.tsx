@@ -25,19 +25,9 @@ function SunMoon({ sunrise, sunset, timezone, current }: Props) {
 
     var difference_sunset =
       totalSeconds(sunset_time) - totalSeconds(sunrise_time);
-    var difference_sunset_time = formatToLocalTime(
-      difference_sunset,
-      timezone,
-      "TT"
-    );
 
     var difference_current =
       totalSeconds(current_time) - totalSeconds(sunrise_time);
-    var difference_current_time = formatToLocalTime(
-      difference_current,
-      timezone,
-      "TT"
-    );
 
     var pct = ((100 * difference_current) / difference_sunset).toFixed(2);
 
@@ -51,7 +41,12 @@ function SunMoon({ sunrise, sunset, timezone, current }: Props) {
           <div className="sun-path">
             <div
               className="sun-animation"
-              style={{ width: `${percentage}%` }}
+              style={{
+                width: `${percentage}%`,
+                backgroundColor: `${
+                  parseFloat(percentage) > 100 && "transparent"
+                }`,
+              }}
             ></div>
           </div>
           {/* <div

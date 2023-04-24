@@ -9,29 +9,38 @@ import { SearchResultModel } from "../model/SearchResultModel";
 type SearchInputProps = {
   setIsSearchOpen: Dispatch<SetStateAction<boolean>>;
   setLocation: Dispatch<SetStateAction<{ lat: number; lon: number }>>;
+  setName: Dispatch<SetStateAction<string>>;
 };
 
-function SearchInput({ setIsSearchOpen, setLocation }: SearchInputProps) {
+function SearchInput({
+  setIsSearchOpen,
+  setLocation,
+  setName,
+}: SearchInputProps) {
   const inputRef = useRef(null);
   const [searchInput, setSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState<SearchResultModel[]>([]);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   useClickOutside(inputRef, () => {
     setIsSearchOpen(false);
   });
 
   useEffect(() => {
-    const getSearchData = async () => {
+    const getSearchData = setTimeout(async () => {
       const { data } = await axios.get(
         `https://geocoding-api.open-meteo.com/v1/search?name=${searchInput}`
       );
       setSearchResult(data.results);
       return data;
-    };
-    getSearchData();
+    }, 600);
+
+    return () => clearTimeout(getSearchData);
   }, [searchInput]);
 
-  console.log(searchResult);
+  useEffect(() => {
+    searchRef?.current?.focus();
+  }, []);
 
   return (
     <>
@@ -39,9 +48,10 @@ function SearchInput({ setIsSearchOpen, setLocation }: SearchInputProps) {
         <div className="flex w-full cursor-pointer border p-2 rounded-lg gap-1 border-white ">
           <UilSearch size="30" color="#fff" />
           <input
+            ref={searchRef}
             className="w-full bg-transparent outline-none font-medium placeholder-slate-200"
             type="text"
-            placeholder="Search by location or coordinates"
+            placeholder="Search by location"
             onChange={(e) => setSearchInput(e.target.value)}
           />
         </div>
@@ -52,10 +62,13 @@ function SearchInput({ setIsSearchOpen, setLocation }: SearchInputProps) {
                 key={search?.id}
                 className="flex w-[100%] items-center gap-2 p-3 border-b last:border-none  border-gray-400 cursor-pointer hover:bg-blue-100 hover:rounded-lg hover:border-blue-100 "
                 onClick={() => {
-                  setLocation({
-                    lat: search?.latitude || 13,
-                    lon: search?.longitude || 104,
-                  });
+                  search.latitude &&
+                    search.longitude &&
+                    setLocation({
+                      lat: search.latitude,
+                      lon: search.longitude,
+                    });
+                  setName(search?.name || search?.country || "");
                   setIsSearchOpen(false);
                 }}
               >

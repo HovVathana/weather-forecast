@@ -10,9 +10,9 @@ module.exports = {
       primary: "Poppins",
     },
     extend: {
-      backgroundImage: {
-        gradientBg: "url('/bg.png')",
-      },
+      // backgroundImage: {
+      //   gradientBg: "url('/day/clear.jpg')",
+      // },
       keyframes: {
         shake: {
           "0%": {
