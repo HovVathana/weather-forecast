@@ -14,6 +14,7 @@ import SearchInput from "./components/SearchInput";
 import SunMoon from "./components/SunMoon";
 import ClockLoader from "react-spinners/ClockLoader";
 import { FormatForecastWeatherModel } from "./model/FormatForecastWeatherModel";
+import Image from "next/image";
 
 const fetcher = async (params: any) => {
   const [url, { lat, lon }] = params;
@@ -41,9 +42,9 @@ export default function Home() {
   if (error) return "An error has occured" + error;
   if (!data)
     return (
-      <div className="w-screen h-screen items-center justify-center text-white p-6 bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col">
+      <div className="w-screen h-screen bg-slate-200 items-center justify-center text-white p-6 bg-no-repeat bg-cover bg-center flex flex-col">
         <ClockLoader
-          color="#fff"
+          color="#000"
           loading={true}
           size={30}
           aria-label="Loading Spinner"
@@ -52,12 +53,6 @@ export default function Home() {
       </div>
     );
   const { formatForecastData } = data;
-
-  console.log(location);
-
-  console.log(formatForecastData);
-
-  console.log(Object.keys(formatForecastData).length == 0);
 
   const getBackgroundImage = (detail: string) => {
     if (detail === "Thunderstorm") return "/thunderstorm.jpg";
@@ -78,7 +73,7 @@ export default function Home() {
         }}
         className="w-full h-full text-white p-6 md:px-[150px] lg:px-[200px] bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col"
       >
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center h-[80px]">
           <h1 className={`font-semibold text-lg ${isSearchOpen && "hidden"}`}>
             {name}
           </h1>

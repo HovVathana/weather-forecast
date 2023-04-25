@@ -47,7 +47,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
 
   let hourly = hourlyData.map((d: any) => {
     return {
-      title: formatToLocalTime(d.dt, timezone, "hh:mm a"),
+      title: formatToLocalTime(d.dt, timezone, "T"),
       temp: d.temp,
       icon: d.weather[0].icon,
       wind_speed: d.wind_speed,
