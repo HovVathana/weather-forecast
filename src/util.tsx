@@ -59,7 +59,8 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
 };
 
 export const getImgUrlFromCode = (code: string) =>
-  `http://openweathermap.org/img/w/${code}.png`;
+  // `http://openweathermap.org/img/w/${code}.png`;
+  `https://openweathermap.org/img/wn/${code}@2x.png`;
 
 export const useClickOutside = (ref: any, fun: any) => {
   useEffect(() => {
