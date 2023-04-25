@@ -1,11 +1,10 @@
 "use client";
 
-import { formatForecastWeather, getImgUrlFromCode } from "@/util";
 import {
-  UilSearch,
-  UilLocationPoint,
-  UilArrowUp,
-} from "@iconscout/react-unicons";
+  formatForecastWeather,
+  getBackgroundImage,
+  getImgUrlFromCode,
+} from "@/util";
 import axios from "axios";
 import useSWR from "swr";
 import { ForecastWeatherModel } from "./model/ForecastWeatherModel";
@@ -14,9 +13,13 @@ import SearchInput from "./components/SearchInput";
 import SunMoon from "./components/SunMoon";
 import ClockLoader from "react-spinners/ClockLoader";
 import { FormatForecastWeatherModel } from "./model/FormatForecastWeatherModel";
-import Image from "next/image";
+import { BiSearchAlt } from "react-icons/bi";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { TbLocation } from "react-icons/tb";
 
-const fetcher = async (params: any) => {
+const fetcher = async (
+  params: [url: string, location: { lat: number; lon: number }]
+) => {
   const [url, { lat, lon }] = params;
 
   if (lat === undefined && lon === undefined) {
@@ -54,15 +57,6 @@ export default function Home() {
     );
   const { formatForecastData } = data;
 
-  const getBackgroundImage = (detail: string) => {
-    if (detail === "Thunderstorm") return "/thunderstorm.jpg";
-    if (detail === "Snow") return "/snow.jpg";
-    if (detail === "Rain" || detail === "Drizzle") return "/drizzle.jpg";
-    if (detail === "Clouds") return "/cloud.jpg";
-    if (detail === "Clear") return "/clear.jpg";
-    return "/mist.jpg";
-  };
-
   return (
     <>
       <div
@@ -77,13 +71,14 @@ export default function Home() {
           <div className="h-screen flex flex-col items-center ">
             <div className="w-full  mb-[20px]">
               <SearchInput
+                firstLoaded
                 setIsSearchOpen={setIsSearchOpen}
                 setLocation={setLocation}
                 setName={setName}
               />
             </div>
             <h1 className="text-3xl mt-[80px] mb-4">Search for location</h1>
-            <UilLocationPoint size="90" color="#fff" />
+            <HiOutlineLocationMarker size="90" color="#fff" />
           </div>
         ) : (
           <>
@@ -101,7 +96,7 @@ export default function Home() {
                 />
               ) : (
                 <div onClick={() => setIsSearchOpen(true)}>
-                  <UilSearch size="30" color="#fff" />
+                  <BiSearchAlt size="30" color="#fff" />
                 </div>
               )}
             </div>
@@ -135,7 +130,7 @@ export default function Home() {
                 </div>
               ))}
 
-              <div className="flex justify-between mt-8 h-fit space-x-8 overflow-y-hidden overflow-x-auto">
+              <div className="flex justify-between py-6 mt-8 h-fit space-x-8 overflow-y-hidden overflow-x-auto">
                 {formatForecastData.hourly.map((hourly, i) => (
                   <div className="flex flex-col items-center">
                     <p className="text-[12px] text-gray-300">{hourly.title}</p>
@@ -145,11 +140,13 @@ export default function Home() {
                       className="w-[40px]"
                       alt="weather-icon"
                     />
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
                       <div
-                        style={{ transform: `rotate(${hourly.wind_deg}deg)` }}
+                        style={{
+                          transform: `rotate(${hourly.wind_deg - 45}deg)`,
+                        }}
                       >
-                        <UilArrowUp size="15" color="#fff" />
+                        <TbLocation size="15" color="#fff" />
                       </div>
                       <p className="text-[12px] text-gray-300">
                         {hourly.wind_speed}km/h

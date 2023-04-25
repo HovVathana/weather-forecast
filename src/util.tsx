@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { ForecastWeatherModel } from "./app/model/ForecastWeatherModel";
+import { Daily, ForecastWeatherModel } from "./app/model/ForecastWeatherModel";
 import { DateTime } from "luxon";
+import { Current } from "./app/model/ForecastWeatherModel";
 
 export const formatToLocalTime = (
   secs: number,
@@ -34,7 +35,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
     wind_speed: currentData.wind_speed,
   };
 
-  let daily = dailyData.slice(1, 6).map((d: any) => {
+  let daily = dailyData.slice(1, 6).map((d: Daily) => {
     return {
       title: formatToLocalTime(d.dt, timezone, "ccc"),
       temp: d.temp.day,
@@ -45,7 +46,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
     };
   });
 
-  let hourly = hourlyData.slice(0, 24).map((d: any) => {
+  let hourly = hourlyData.slice(0, 24).map((d: Current) => {
     return {
       title: formatToLocalTime(d.dt, timezone, "T"),
       temp: d.temp,
@@ -62,21 +63,11 @@ export const getImgUrlFromCode = (code: string) =>
   `http://openweathermap.org/img/w/${code}.png`;
 // `https://openweathermap.org/img/wn/${code}@2x.png`;
 
-export const useClickOutside = (ref: any, fun: any) => {
-  useEffect(() => {
-    const listener = (e: any) => {
-      // when the ref is not click or when the click inside the ref
-      if (!ref.current || ref.current.contains(e.target)) {
-        return;
-      }
-      fun();
-    };
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
-    return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
-    };
-  }, [ref]);
-  return <div>clickOutside</div>;
+export const getBackgroundImage = (detail: string) => {
+  if (detail === "Thunderstorm") return "/thunderstorm.jpg";
+  if (detail === "Snow") return "/snow.jpg";
+  if (detail === "Rain" || detail === "Drizzle") return "/drizzle.jpg";
+  if (detail === "Clouds") return "/cloud.jpg";
+  if (detail === "Clear") return "/clear.jpg";
+  return "/mist.jpg";
 };
