@@ -27,15 +27,16 @@ function SearchInput({
   });
 
   useEffect(() => {
-    const getSearchData = setTimeout(async () => {
-      const { data } = await axios.get(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${searchInput}`
-      );
-      setSearchResult(data.results);
-      return data;
-    }, 600);
-
-    return () => clearTimeout(getSearchData);
+    if (searchInput != "") {
+      const getSearchData = setTimeout(async () => {
+        const { data } = await axios.get(
+          `https://geocoding-api.open-meteo.com/v1/search?name=${searchInput}`
+        );
+        setSearchResult(data.results);
+        return data;
+      }, 600);
+      return () => clearTimeout(getSearchData);
+    }
   }, [searchInput]);
 
   useEffect(() => {

@@ -45,7 +45,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
     };
   });
 
-  let hourly = hourlyData.map((d: any) => {
+  let hourly = hourlyData.slice(0, 24).map((d: any) => {
     return {
       title: formatToLocalTime(d.dt, timezone, "T"),
       temp: d.temp,
@@ -59,7 +59,7 @@ export const formatForecastWeather = (data: ForecastWeatherModel) => {
 };
 
 export const getImgUrlFromCode = (code: string) =>
-  `http://openweathermap.org/img/wn/${code}@2x.png`;
+  `http://openweathermap.org/img/w/${code}.png`;
 
 export const useClickOutside = (ref: any, fun: any) => {
   useEffect(() => {

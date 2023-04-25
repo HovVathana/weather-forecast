@@ -45,7 +45,7 @@ export default function Home() {
       <div className="w-screen h-screen bg-slate-200 items-center justify-center text-white p-6 bg-no-repeat bg-cover bg-center flex flex-col">
         <ClockLoader
           color="#000"
-          loading={true}
+          loading={!data}
           size={30}
           aria-label="Loading Spinner"
           data-testid="loader"
@@ -73,29 +73,38 @@ export default function Home() {
         }}
         className="w-full h-full text-white p-6 md:px-[150px] lg:px-[200px] bg-gradientBg bg-no-repeat bg-cover bg-center flex flex-col"
       >
-        <div className="flex justify-between items-center h-[80px]">
-          <h1 className={`font-semibold text-lg ${isSearchOpen && "hidden"}`}>
-            {name}
-          </h1>
-          {isSearchOpen ? (
-            <SearchInput
-              setIsSearchOpen={setIsSearchOpen}
-              setLocation={setLocation}
-              setName={setName}
-            />
-          ) : (
-            <div onClick={() => setIsSearchOpen(true)}>
-              <UilSearch size="30" color="#fff" />
-            </div>
-          )}
-        </div>
         {!name ? (
-          <div className="h-screen flex flex-col items-center mt-[150px]">
-            <h1 className="text-3xl mb-4">Search for location</h1>
+          <div className="h-screen flex flex-col items-center ">
+            <div className="w-full  mb-[20px]">
+              <SearchInput
+                setIsSearchOpen={setIsSearchOpen}
+                setLocation={setLocation}
+                setName={setName}
+              />
+            </div>
+            <h1 className="text-3xl mt-[80px] mb-4">Search for location</h1>
             <UilLocationPoint size="90" color="#fff" />
           </div>
         ) : (
           <>
+            <div className="flex justify-between items-center h-[80px]">
+              <h1
+                className={`font-semibold text-lg ${isSearchOpen && "hidden"}`}
+              >
+                {name}
+              </h1>
+              {isSearchOpen ? (
+                <SearchInput
+                  setIsSearchOpen={setIsSearchOpen}
+                  setLocation={setLocation}
+                  setName={setName}
+                />
+              ) : (
+                <div onClick={() => setIsSearchOpen(true)}>
+                  <UilSearch size="30" color="#fff" />
+                </div>
+              )}
+            </div>
             <div className="flex flex-col items-center mt-[100px]">
               <h1 className="text-[150px] relative">
                 {Math.round(formatForecastData.current.temp)}
